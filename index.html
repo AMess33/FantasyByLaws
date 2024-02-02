@@ -129,7 +129,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = "https://www.googleapis.com/auth/drive.metadata.readonly";
+      const SCOPES = "https://www.googleapis.com/auth/documents";
 
       let tokenClient;
       let gapiInited = false;
@@ -204,7 +204,17 @@
           tokenClient.requestAccessToken({ prompt: "" });
         }
       }
-
+      function createDoc() {
+        console.log(tokenClient);
+        console.log(gapi.client.getToken());
+        fetch("https://content-docs.googleapis.com/v1/documents", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${gapi.client.getToken().access_token}`,
+          },
+          body: JSON.stringify({ title: "Fantasy bylawss" }),
+        });
+      }
       /**
        *  Sign out the user upon button click.
        */
@@ -258,5 +268,9 @@
       src="https://accounts.google.com/gsi/client"
       onload="gisLoaded()"
     ></script>
+
+    <button onclick="createDoc()">Run fetch request</button>
   </body>
 </html>
+
+<!-- npx http-server -p 8000 -->
